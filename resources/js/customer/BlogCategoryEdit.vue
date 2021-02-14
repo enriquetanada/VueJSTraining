@@ -3,14 +3,18 @@
         <main class="container">
 
             <div class="starter-template text-left py-5 px-2 mt-3">
-                <h1>Add New Blog Category</h1>
+                <h1>Update Blog Category</h1>
             </div>
             <div class="alert alert-warning" v-if="isSaving">
                 <span class="spinner-border text-warning"></span>
                 Please wait.. saving category records
             </div>
+            <div class="alert alert-warning" v-if="loaded">
+                <span class="spinner-border text-warning"></span>
+                Please wait.. loading category records
+            </div>
             <form @submit.prevent="submitForm">
-                <div class="row">
+                <div class="row" v-if="!loaded">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Name</label>
@@ -37,19 +41,28 @@
             return {
                 name:'',
                 name_error: '',
-                isSaving: false
+                isSaving: false, 
+                loaded: true
             }
         },
+        created() {
+            this.$query('category', {
+                category_id: this.$route.params.id
+            }).then(res => {
+                this.loaded=false;
+                let category = res.data.data.category[0];
+                this.name = category.name;
+            })
+        }, 
         methods: {
             submitForm() {
                 this.isSaving = true;
                 this.$query('savecategory', {
                         name:this.name,
-                        id: "0"
+                        id: this.$route.params.id
 
                 }).then(res => {
                     this.isSaving = false;
-                    console.log(res);
                     if(res.data.errors) {
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
 						let errors_keys = Object.keys(res.data.errors[0].extensions.validation).flat();
@@ -63,7 +76,6 @@
 							response.message,
 							'primary'
 						);
-                        this.name = ' ';
                         this.name_error = ' ';
 
                         } else {

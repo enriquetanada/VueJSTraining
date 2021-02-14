@@ -20,7 +20,7 @@ class SaveCategoryMutation extends Mutation
     {
         return [
             'name' => ['type' => Type::String()],
-            'id' => ['type' => Type::Int()],
+            'id' => ['type' => Type::String()],
         ];
     }
 
@@ -47,12 +47,14 @@ class SaveCategoryMutation extends Mutation
     public function resolve($root, $args)
     {
       $name = $args['name'];
+      $category_id = $args['id'];
       $blog_category_model = new BlogCategory();
       $customer_model = new Customer();
 
       $customer = $customer_model->GetCustomerID();
       //check if category name exists
-      $category = $blog_category_model->CheckCategoryName($name, $customer->id);
+      $category = $blog_category_model->CheckCategoryName($category_id, $name, $customer->id);
+
       $response_obj = new \stdClass();
       if($category) {
         //return an error message that category name already in used
@@ -60,7 +62,7 @@ class SaveCategoryMutation extends Mutation
         $response_obj->message = "Category name already exists";
       } else {
         //save category
-        $blog_category_model->SaveCategory(0, $name, $customer->id);
+        $blog_category_model->SaveCategory($category_id, $name, $customer->id);
         //return success message
         $response_obj->error = false;
         $response_obj->message = 'Category was successfully saved!';
