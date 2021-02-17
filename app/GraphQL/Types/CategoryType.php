@@ -8,7 +8,6 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class CategoryType extends GraphQLType
 {
-    protected $inputObject = true;
     protected $attributes = [
         'name' => 'CategoryType',
         'description' => 'A customer type information'
@@ -17,6 +16,9 @@ class CategoryType extends GraphQLType
     public function fields(): array
     {
         return [
+            'id' => [
+                'type' => Type::string()
+            ],
             'name' => [
                 'type' => Type::string()
             ],

@@ -17,8 +17,14 @@ let queries = {
         savecategory(name: $name, id: $id) {
             error,
             message
+        }         
+    }`,
+    category: `query fetchSingleCategory($category_id: String){
+        category(category_id: $category_id) {
+            id,
+            name
         }
-    }`
+    }` 
 
     
 };

@@ -24,9 +24,9 @@
                 </thead>
                 <tbody>
                     <tr v-for="category_data in category" v-if="category.length > 0">
-                        <td>Test</td>
+                        <td>{{category_data.name}}</td>
                         <td>
-                            <router-link to="/customer/blog-category/edit">Edit</router-link>
+                            <router-link :to="`/customer/blog-category/edit/${category_data.id}`">Edit</router-link>
                             |
                             <router-link to="/customer/blog-category/delete">Delete</router-link>
 
@@ -48,13 +48,13 @@
         data() {
             return {
                 category: [],
-                loaded: false
+                loaded: true
             }
         },
         created() {
             this.$query('category').then(res => {
                 this.loaded = false;
-                this.customers = res.data.data.category;
+                this.category = res.data.data.category;
             })
         }
     }

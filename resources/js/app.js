@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import AxiosPlugin from 'vue-axios-cors';
 import VueMeta from 'vue-meta';
 import VueSweetAlert2 from 'vue-sweetalert2';
+import swal from 'sweetalert2/dist/sweetalert2.all.min.js'
 import moment from 'moment';
 import routes from './routes';
 import App from './App.vue';

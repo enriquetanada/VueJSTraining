@@ -12,13 +12,17 @@ class BlogCategory extends Eloquent {
         return self::where('customer_id', '=', $customer_id)->get();
     }
 
-    public function CheckCategoryName($name, $customer_id) {
-        $category= self::where('name', '=', $name)->where('customer_id', '=', $customer_id)->first();
-
+    public function CheckCategoryName($category_id, $name, $customer_id) {
+        $category_rec= self::where('name', '=', $name)->where('customer_id', '=', $customer_id);
+        if($category_id > 0) {
+            $category_rec->where('id', '!=', $category_id);
+        }
+        
+        $category = $category_rec->first();
         return $category;
     }
     public function SaveCategory($type, $name, $customer_id){
-        if($type ==0) {
+        if($type == 0) {
             $category = new self;
             $category->customer_id = $customer_id;
         } else {
@@ -27,6 +31,11 @@ class BlogCategory extends Eloquent {
         $category->name = $name;
         $category->save();
 
+    }
+
+    public function DisplaySingleCategory($category_id, $customer_id) {
+        $category= self::where('id', '=', $category_id)->where('customer_id', '=', $customer_id)->get();
+        return $category;
     }
 }
 

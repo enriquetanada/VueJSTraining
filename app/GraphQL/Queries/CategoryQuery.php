@@ -21,12 +21,25 @@ class CategoryQuery extends Query
         return Type::listOf(GraphQL::type('categoryType'));
    }
 
+   public function args(): array
+    {
+        return [
+            'category_id' => ['type' => Type::String()],
+        ];
+    }
+
    public function resolve($root, $args){
 
         $blog_category_model = new BlogCategory();
         $customer_model = new Customer();
 
         $customer = $customer_model->GetCustomerID();
+
+        if(isset($args['category_id'])) {
+          $blog_category = $blog_category_model->DisplaySingleCategory($args['category_id'], $customer->id);  
+          return $blog_category;   
+        }
+        
         $blog_category = $blog_category_model->DisplayCategoryByCustomerID($customer->id);
 
 
