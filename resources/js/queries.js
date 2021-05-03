@@ -9,11 +9,11 @@ let queries = {
     login: `mutation login($customer: CustomerInput){
         login(customer: $customer)
     }`,
-    category: `{category{id,name}}`,
+    category: `{category{id,name}}`, // remove id
     checkcustomer: `query CheckCustomerQuery {
         checkcustomer
     }`,
-    savecategory: `mutation savecategory($name: String, $id: Int) {
+    savecategory: `mutation savecategory($name: String, $id: String) {
         savecategory(name: $name, id: $id) {
             error,
             message
@@ -24,7 +24,13 @@ let queries = {
             id,
             name
         }
-    }` 
+    }`,
+    category: `query fetchSingleCategory($category_id: String, $delete_category_id: String){
+        category(category_id: $category_id, delete_category_id: $delete_category_id) {
+            id,
+            name
+        }
+    }`
 
     
 };

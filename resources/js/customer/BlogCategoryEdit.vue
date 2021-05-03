@@ -11,9 +11,8 @@
             </div>
             <div class="alert alert-warning" v-if="loaded">
                 <span class="spinner-border text-warning"></span>
-                Please wait.. wait loading category records
+                Please wait.. loading category records
             </div>
-
             <form @submit.prevent="submitForm">
                 <div class="row" v-if="!loaded">
                     <div class="col-md-6">
@@ -42,7 +41,7 @@
             return {
                 name:'',
                 name_error: '',
-                isSaving: false,
+                isSaving: false, 
                 loaded: true
             }
         },
@@ -50,17 +49,17 @@
             this.$query('category', {
                 category_id: this.$route.params.id
             }).then(res => {
-                this.loaded = false;
+                this.loaded=false;
                 let category = res.data.data.category[0];
                 this.name = category.name;
             })
-        },
+        }, 
         methods: {
             submitForm() {
                 this.isSaving = true;
                 this.$query('savecategory', {
                         name:this.name,
-                        id: Number.parseInt(this.$route.params.id)
+                        id: this.$route.params.id
 
                 }).then(res => {
                     this.isSaving = false;
@@ -70,7 +69,6 @@
                         this.name_error = errors_keys.some(q => q === "name") ? errors[errors_keys.indexOf("name")] : "";
                     } else {
                         let response = res.data.data.savecategory;
-                        console.log(response);
                         if(response == false){
                             //display success message
                             this.$swal(
@@ -78,6 +76,7 @@
 							response.message,
 							'primary'
 						);
+                        this.name_error = ' ';
 
                         } else {
                             //display error message

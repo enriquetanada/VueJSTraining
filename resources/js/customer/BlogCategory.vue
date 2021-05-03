@@ -23,12 +23,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category_data in category" v-if="category.length > 0">
+                    <tr v-for="category_data in category"  v-if="category.length > 0"  >
                         <td>{{category_data.name}}</td>
                         <td>
                             <router-link :to="`/customer/blog-category/edit/${category_data.id}`">Edit</router-link>
                             |
-                            <router-link to="/customer/blog-category/delete">Delete</router-link>
+                            <router-link :to="{name: 'blog-category'}" v-on:click.native="deleteRecord(`${category_data.id}`)">Delete</router-link>
 
                         </td>
                     </tr>
@@ -56,6 +56,29 @@
                 this.loaded = false;
                 this.category = res.data.data.category;
             })
+        },
+        methods: {
+            deleteRecord(category_id){
+            this.$swal({
+                title: "Are you sure?",
+                text: "You want to delete this record?",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "Yes, delete it"
+
+            }).then((result) => {
+                if(result.value){
+                    //delete record
+                    this.$query('category', {
+                        delete_category_id: category_id
+                     }).then(res => {
+                        this.loaded=false;
+                        this.category = res.data.data.category;
+                    })
+                }
+            })
+            }
         }
     }
 

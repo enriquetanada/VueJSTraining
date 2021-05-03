@@ -45,17 +45,17 @@
                 this.isSaving = true;
                 this.$query('savecategory', {
                         name:this.name,
-                        id: 0
+                        id: "0"
 
                 }).then(res => {
                     this.isSaving = false;
+                    console.log(res);
                     if(res.data.errors) {
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
 						let errors_keys = Object.keys(res.data.errors[0].extensions.validation).flat();
                         this.name_error = errors_keys.some(q => q === "name") ? errors[errors_keys.indexOf("name")] : "";
                     } else {
                         let response = res.data.data.savecategory;
-                        console.log(response);
                         if(response == false){
                             //display success message
                             this.$swal(
@@ -63,6 +63,8 @@
 							response.message,
 							'primary'
 						);
+                        this.name = ' ';
+                        this.name_error = ' ';
 
                         } else {
                             //display error message

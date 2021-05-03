@@ -25,6 +25,9 @@ class CategoryType extends GraphQLType
             'customer_id' => [
                 'type' => Type::string()
             ],
+            'id' => [
+                'type' => Type::string()
+            ]
         ];
     }
 }
